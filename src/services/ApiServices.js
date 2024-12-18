@@ -10,6 +10,16 @@ export const getDeviceStatus = async () => {
     }
 }
 
+export const getStatus = async (  ) => {
+    try{
+        const res = await axios.get(`/api/external/api/get?token=${import.meta.env.VITE_BLYNK_AUTH_TOKEN}&v3`)
+        return res.data;
+    }catch(e){
+        throw e;
+    }
+}
+
+
 export const setPurifierON = async (  ) => {
     try{
         const res = await axios.get(`/api/external/api/update?token=${import.meta.env.VITE_BLYNK_AUTH_TOKEN}&v3=1`)

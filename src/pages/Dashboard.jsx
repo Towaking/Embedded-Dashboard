@@ -5,7 +5,7 @@ import {
     getDataC0,
     getDataC02,
     getDeviceStatus,
-    getPurifierStatus,
+    getPurifierStatus, getStatus,
     setPurifierOff,
     setPurifierON
 } from "../services/ApiServices.js";
@@ -101,7 +101,11 @@ export const Dashboard = () => {
                 timeoutId = setTimeout(fetchAndUpdateDeviceStatus, 5000);
             }
         };
-
+        const fetchPurifierStatus = async () => {
+            const status = await getStatus();
+            setPurifierControl(status);
+        }
+        fetchPurifierStatus();
         fetchAndUpdateDeviceStatus();
         fetchAndUpdateChartData();
 
@@ -149,12 +153,12 @@ export const Dashboard = () => {
             },
         },
     };
-    const toogleDeviceStatus = async () =>{
-        if(purifierStatus){
+    const tooglePurifierStatus = async () =>{
+        if(purifierControl){
             await setPurifierOff();
         }
         else{
-            await setPurifierON()
+            await setPurifierON();
         }
         setPurifierControl((e)=>!e);
     }
@@ -171,9 +175,9 @@ export const Dashboard = () => {
                 <div className='flex flex-grow w-[60%] flex-col'>
                     <label>Device Status</label>
                     <button
-                        onClick={toogleDeviceStatus}
+                        onClick={tooglePurifierStatus}
                         className={`mt-2 p-2 rounded ${purifierControl ? 'bg-green-500' : 'bg-red-500'} text-white`}
-                        disabled={!deviceStatus ? true : false}
+                        disabled={!deviceStatus}
                     >
                         {purifierControl ? 'Turn Off' : 'Turn On'}
                     </button>
